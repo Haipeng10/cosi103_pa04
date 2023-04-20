@@ -30,17 +30,15 @@
                         <%= transaction.category %>
                     </td>
                     <td>
-                        <% 
-                            const dateObj = new Date(transaction.date);
-                            const timezoneOffset = dateObj.getTimezoneOffset() * 60000; // Convert the timezone offset to milliseconds
-                            const adjustedDate = new Date(dateObj.getTime() + timezoneOffset);
-                    
-                            const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-                            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                            const formattedDate = `${dayNames[adjustedDate.getDay()]} ${monthNames[adjustedDate.getMonth()]} ${adjustedDate.getDate()} ${adjustedDate.getFullYear()}`;
-                        %>
-                        <%= formattedDate %>
-                    </td>                    
+                        <% const dateObj=new Date(transaction.date); const timezoneOffset=dateObj.getTimezoneOffset() *
+                            60000; // Convert the timezone offset to milliseconds const adjustedDate=new
+                            Date(dateObj.getTime() + timezoneOffset); const dayNames=["Sun", "Mon" , "Tue" , "Wed"
+                            , "Thu" , "Fri" , "Sat" ]; const monthNames=["Jan", "Feb" , "Mar" , "Apr" , "May" , "Jun"
+                            , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec" ]; const
+                            formattedDate=`${dayNames[adjustedDate.getDay()]} ${monthNames[adjustedDate.getMonth()]}
+                            ${adjustedDate.getDate()} ${adjustedDate.getFullYear()}`; %>
+                            <%= formattedDate %>
+                    </td>
                     <td>
                         <a href="/transaction/remove/<%=transaction._id %>">
                             <i class="bi bi-trash"></i>

@@ -4,7 +4,6 @@ const router = express.Router();
 const Transaction = require('../models/Transaction');
 const User = require('../models/User');
 const mongoose = require('mongoose');
-const formatAmount = require('../public/js/formatAmount');
 
 isLoggedIn = (req, res, next) => {
     if (res.locals.loggedIn) {
@@ -14,6 +13,7 @@ isLoggedIn = (req, res, next) => {
     }
 };
 
+// show all transactions and sort by date, amount, or category
 router.get('/transaction',
     isLoggedIn,
     async (req, res, next) => {
@@ -29,9 +29,10 @@ router.get('/transaction',
             transactions = await Transaction.find({ userId: req.user._id });
         }
         console.log(transactions);
-        res.render('transaction', { transactions, user: req.user, formatAmount });
+        res.render('transaction', { transactions, user: req.user });
     });
 
+// add a new transaction
 router.post('/transaction',
     isLoggedIn,
     async (req, res, next) => {
@@ -46,6 +47,7 @@ router.post('/transaction',
         res.redirect('/transaction');
     });
 
+// remove a transaction
 router.get('/transaction/remove/:transactionId',
     isLoggedIn,
     async (req, res, next) => {
@@ -54,15 +56,17 @@ router.get('/transaction/remove/:transactionId',
         res.redirect('/transaction');
     });
 
+// edit a transaction
 router.get('/transaction/edit/:transactionId',
     isLoggedIn,
     async (req, res, next) => {
         console.log("inside /transaction/edit/:transactionId")
         const transaction =
             await Transaction.findById(req.params.transactionId);
-        res.render('editTransaction', { transaction, formatAmount });
+        res.render('editTransaction', { transaction });
     });
 
+// get transaction params
 const getTransactionParams = (body) => {
     return {
         description: body.description,
@@ -72,6 +76,7 @@ const getTransactionParams = (body) => {
     };
 };
 
+// update a transaction
 router.post('/transaction/edit/:transactionId',
     isLoggedIn,
     async (req, res, next) => {
@@ -82,6 +87,7 @@ router.post('/transaction/edit/:transactionId',
         res.redirect('/transaction')
     });
 
+// group transactions by category
 router.get('/transaction/byCategory',
     isLoggedIn,
     async (req, res, next) => {
@@ -100,7 +106,7 @@ router.get('/transaction/byCategory',
                 },
                 { $sort: { amount: -1 } },
                 ])
-        res.render('groupByCategory', { transactions, user: req.user, formatAmount });
+        res.render('groupByCategory', { transactions, user: req.user });
     });
 
 module.exports = router;
