@@ -25,6 +25,8 @@ router.get('/transaction',
             transactions = await Transaction.find({ userId: req.user._id }).sort({ amount: 1 });
         } else if (sortBy == 'category') {
             transactions = await Transaction.find({ userId: req.user._id }).sort({ category: 1 });
+        } else if (sortBy == 'description') {
+            transactions = await Transaction.find({ userId: req.user._id }).sort({ description: 1 });
         } else {
             transactions = await Transaction.find({ userId: req.user._id });
         }
