@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
+const axios = require('axios');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -8,6 +9,7 @@ const pw_auth_router = require('./routes/pwauth')
 const toDoRouter = require('./routes/todo');
 const weatherRouter = require('./routes/weather');
 const transactionRouter = require('./routes/transaction');
+const gptRouter = require('./routes/gpt');
 
 const User = require('./models/User');
 
@@ -23,6 +25,8 @@ mongoose.connect( mongodb_URI);
 
 const db = mongoose.connection;
 
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const OPENAI_API_URL = 'https://api.openai.com/v1/engines/davinci-codex/completions';
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -107,9 +111,17 @@ app.get('/about',
   }
 )
 
+app.get('/team', 
+  isLoggedIn,
+  (req,res,next) => {
+    res.render('team');
+  }
+)
+
 app.use(toDoRouter);
 app.use(weatherRouter);
 app.use(transactionRouter);
+app.use(gptRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

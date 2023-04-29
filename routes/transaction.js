@@ -30,7 +30,6 @@ router.get('/transaction',
         } else {
             transactions = await Transaction.find({ userId: req.user._id });
         }
-        console.log(transactions);
         res.render('transaction', { transactions, user: req.user });
     });
 
